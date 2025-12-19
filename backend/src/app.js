@@ -22,9 +22,14 @@ const app = express();
 
 app.use(helmet());
 
-  app.use(cors({
-  origin: "*"
+  const cors = require("cors");
+
+app.use(cors({
+  origin: "https://recharge-frontend-1.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
 
 app.use(morgan('combined'));
 app.use(express.json());
