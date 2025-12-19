@@ -4,7 +4,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-router.get('/', getTransactions);
+router.get('/', authMiddleware, getTransactions);
 router.post('/', createTransaction);
 router.delete('/', deleteAllTransactions);
 router.get('/:id', authMiddleware, getTransactionById);
