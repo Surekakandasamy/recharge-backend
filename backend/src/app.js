@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
-const { CORS_ORIGIN } = require('./config/env');
 const errorMiddleware = require('./middlewares/error.middleware');
 
 const authRoutes = require('./routes/auth.routes');
@@ -20,21 +19,21 @@ const adminRoutes = require('./routes/admin.routes');
 
 const app = express();
 
+// Security headers
 app.use(helmet());
 
-  const cors = require("cors");
-
+// ✅ CORS – ONLY ONCE
 app.use(cors({
   origin: "https://recharge-frontend-1.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-
 app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/wallet', walletRoutes);
@@ -46,6 +45,7 @@ app.use('/api/offers', offerRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Global error handler
 app.use(errorMiddleware);
 
 module.exports = app;
