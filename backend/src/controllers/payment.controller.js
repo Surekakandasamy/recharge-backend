@@ -15,12 +15,13 @@ const getPayments = async (req, res) => {
 
 const createPayment = async (req, res) => {
   try {
-    const User = require('../models/User');
-    const defaultUser = await User.findOne({ role: 'user' });
+    if (!req.user || !req.user._id) {
+      return errorResponse(res, 'User authentication required', 401);
+    }
     
     const payment = await Payment.create({
       ...req.body,
-      userId: req.user?._id || defaultUser._id
+      userId: req.user._id
     });
     successResponse(res, payment, 'Payment created successfully', 201);
   } catch (error) {
